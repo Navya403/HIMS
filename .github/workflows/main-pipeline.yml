@@ -1,0 +1,24 @@
+name: DevSecOps Main Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  frontend:
+    name: Frontend Pipeline
+    uses: ./.github/workflows/frontend-pipeline.yml
+
+  backend:
+    name: Backend Pipeline
+    uses: ./.github/workflows/backend-pipeline.yml
+
+  summary:
+    name: ✅ Final Summary
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🎉 All jobs completed
+        run: echo "✅ Frontend and Backend CI + Security scans completed successfully!"
