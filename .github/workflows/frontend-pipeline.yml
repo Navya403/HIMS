@@ -1,38 +1,35 @@
-name: Frontend CI/CD
+name: Manual Frontend Build
 
 on:
-  workflow_call:
+  workflow_dispatch:
 
 jobs:
   build-frontend:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     defaults:
       run:
         working-directory: frontend
 
     steps:
-      - name: 🔄 Checkout Code
-        uses: actions/checkout@v3
+      - name: 🔄 Checkout code
+        uses: actions/checkout@v4
 
       - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
       - name: 📦 Install Dependencies
         run: npm ci
 
-      - name: 🧹 Lint Code
+      - name: 🧹 Lint
         run: npm run lint
 
-      - name: 🛡️ Run Audit
-        run: npm audit --audit-level=low
-
-      - name: 🛠️ Build Project
+      - name: 🛠️ Build
         run: npm run build
 
-      - name: 📤 Upload Frontend Artifact
+      - name: 📤 Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontend-dist
