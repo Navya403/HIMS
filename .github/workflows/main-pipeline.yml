@@ -31,18 +31,31 @@ jobs:
       - name: Audit dependencies
         run: cd frontend && npm audit --audit-level=high
 
+  # backend-ci:
+  #   name: Backend CI
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Set up JDK
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         distribution: 'temurin'
+  #         java-version: '17'
+
   backend-ci:
     name: Backend CI
     runs-on: ubuntu-latest
     steps:
-       - name: Checkout code
-       uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-       - name: Set up JDK
-       uses: actions/setup-java@v3
-       with:
-         distribution: 'temurin'
-         java-version: '21'
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
       - name: Make mvnw executable
         run: chmod +x Backend/mvnw
