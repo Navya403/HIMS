@@ -27,34 +27,37 @@ jobs:
 
       - name: Lint code
         run: cd frontend && npm run lint
+
       - name: Audit dependencies
         run: cd frontend && npm audit --audit-level=high
 
-  backend-ci:
-    name: Backend CI
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+
+  backend-ci:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout code
+        uses: actions/checkout@v3
+
+        - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Make mvnw executable
+        run: chmod +x backend/mvnw
 
       - name: Build and test
-        run: cd Backend && ./mvnw clean verify
+        run: cd backend && ./mvnw clean verify
 
       - name: Lint Java code
-        run: |
-          cd Backend
-          ./mvnw checkstyle:check
+        run: cd backend && ./mvnw checkstyle:check
 
-      - name: Dependency vulnerability scan
-        run: |
-          cd Backend
-          ./mvnw org.owasp:dependency-check-maven:check
+      - name: Scan for vulnerabilities
+        run: cd backend && ./mvnw org.owasp:dependency-check-maven:check
+
   deploy:
     name: Deploy (Placeholder)
     needs: [frontend-ci, backend-ci]
